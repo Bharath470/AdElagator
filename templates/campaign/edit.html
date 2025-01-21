@@ -1,0 +1,171 @@
+{% extends 'layout.html' %} {% block content %}
+<!-- div container -->
+<div class="container">
+  <div>
+    <h2>Edit a Campaign</h2>
+  </div>
+  <form action="/campaign_edit/{{campaign.id}}" method="post">
+    <!-- Name of organisation -->
+    <div class="row mb-3">
+      <label for="org_name" class="col-sm-2 col-form-label">
+        Name of the Organisation</label
+      >
+      <div class="col-sm-5">
+        <input
+          type="text"
+          class="form-control"
+          name="org_name"
+          id="org_name"
+          value="{{campaign.org_name}}"
+          required
+        />
+      </div>
+    </div>
+    <!-- Name of industry -->
+    <div class="row mb-3">
+      <label for="industry" class="col-sm-2 col-form-label">
+        Industry Type
+      </label>
+      <div class="col-sm-5">
+        <select id="industry" name="industry" required id="industry" class="form-select" aria-label="Default select example">
+        <option value="" disabled selected>Select industry type </option>
+        <option value="beauty" {% if campaign.industry_name == 'beauty'%}selected{% endif %}>Beauty</option>
+        <option value="clothing"{% if campaign.industry_name== 'clothing'%}selected{% endif %}>Clothing</option>
+        <option value="technology" {% if campaign.industry_name == 'technology'%}selected{% endif %}>Technology</option>
+        <option value="food" {% if campaign.industry_name== 'food'%}selected{% endif %}>Food</option>
+      </select>
+      </div>
+    </div>
+    <!-- campaign name  -->
+    <div class="row mb-3">
+      <label for="campaign_name" class="col-sm-2 col-form-label"
+        >Campaign Name</label
+      >
+      <div class="col-sm-5">
+        <input
+          type="text"
+          class="form-control"
+          name="campaign_name"
+          id="campaign_name"
+          value="{{campaign.campaign_name}}"
+          required
+        />
+      </div>
+    </div>
+    <!-- niche -->
+    <div class="row mb-3">
+      <label for="niche" class="col-sm-2 col-form-label">Campaign Niche</label>
+      <div class="col-sm-5">
+        <select id="niche" name="niche" class="form-select" aria-label="Default select example">
+            <option value="" disabled>Select niche type</option>
+            <option value="beauty" {% if campaign.niche == 'beauty' %}selected{% endif %}>Beauty</option>
+            <option value="fashion" {% if campaign.niche == 'fashion' %}selected{% endif %}>Fashion</option>
+            <option value="travel" {% if campaign.niche == 'travel' %}selected{% endif %}>Travel</option>
+            <option value="food" {% if campaign.niche == 'food' %}selected{% endif %}>Food</option>
+            <option value="fitness" {% if campaign.niche == 'fitness' %}selected{% endif %}>Fitness</option>
+            <option value="tech" {% if campaign.niche == 'tech' %}selected{% endif %}>Tech</option>
+            <option value="gaming" {% if campaign.niche == 'gaming' %}selected{% endif %}>Gaming</option>
+            <option value="photography" {% if campaign.niche == 'photography' %}selected{% endif %}>Photography</option>
+        </select>
+      </div>
+    </div>
+    
+    <!-- Category of campaign -->
+    <div class="row mb-3">
+      <label for="category" class="col-sm-2 col-form-label"
+        >Campaign Category</label
+      >
+      <div class="col-sm-5">
+       <select id="category" name="category" required id="category" class="form-select" aria-label="Default select example">
+          <option value="" disabled selected>Select Category</option>
+          <option value="social media campaigns" {% if campaign.category == 'social media campaigns'%}selected{% endif %}>Social Media Campaigns</option>
+          <option value="influencer marketing campaigns" {% if campaign.category == 'influencer marketing campaigns'%}selected{% endif %}>Influencer Marketing Campaigns</option>
+          <option value="content marketing campaigns" {% if campaign.category == 'content marketing campaigns'%}selected{% endif %} >Content Marketing Campaigns</option>
+          <option value="brand awareness campaigns"{% if campaign.category == 'brand awareness campaigns'%}selected{% endif %}>Brand Awareness Campaigns</option>
+          <option value="sales promotion campaigns" {% if campaign.category == 'sales promotion campaigns'%}selected{% endif %}>Sales Promotion Campaigns</option>
+        </select>
+      </div>
+    </div>
+    <!-- Campaign description -->
+
+    <div class="row mb-3">
+      <label for="campaign_description" class="col-sm-2 col-form-label"
+        >Campaign Description</label
+      >
+      <div class="col-sm-5">
+        <input
+          type="text"
+          class="form-control"
+          name="campaign_description"
+          id="campaign_description"
+          value="{{campaign.description}}"
+          required
+        />
+      </div>
+    </div>
+
+    <!-- Start date -->
+    <div class="row mb-3">
+      <label for="start_date" class="col-sm-2 col-form-label">Start Date</label>
+      <div class="col-sm-5">
+        <input
+          type="date"
+          class="form-control"
+          name="start_date"
+          id="start_date"
+          value="{{campaign.start_date}}"
+          required
+        />
+      </div>
+    </div>
+
+    <!-- end date -->
+    <div class="row mb-3">
+      <label for="end_date" class="col-sm-2 col-form-label">End Date</label>
+      <div class="col-sm-5">
+        <input
+          type="date"
+          pattern="yyyy-mm-dd"
+          class="form-control"
+          name="end_date"
+          id="end_date"
+          value="{{campaign.end_date}}"
+          required
+        />
+      </div>
+    </div>
+    <!-- Budget -->
+    <div class="row mb-3">
+      <label for="budgetz" class="col-sm-2 col-form-label">Budget</label>
+      <div class="col-sm-5">
+        <input
+          type="number"
+          class="form-control"
+          name="budget"
+          id="budget"
+          min="0"
+          value="{{campaign.budget}}"
+          required
+        />
+      </div>
+    </div>
+       <div class="row mb-3">
+      <label for="privacy" class="col-sm-2 col-form-label">Campaign type</label>
+      <div class="col-sm-5">
+        <select id="privacy" name="privacy" required  class="form-select" aria-label="Default select example">
+        <option value="" disabled selected>select type </option>
+        <option value="private"{% if campaign.campaign_type == private %} selected{% endif%}>Private</option>
+        <option value="public" {% if campaign.campaign_type == public %} selected{% endif%}>Public</option>
+      </select>
+      </div>
+    </div>
+
+    <!-- submit button -->
+    <div class="row mb-3">
+      <div class="col-sm-5 offset-sm-2">
+        <button type="submit" class="btn btn-primary">Edit Campaign</button>
+      </div>
+    </div>
+  </form>
+</div>
+{%endblock%}

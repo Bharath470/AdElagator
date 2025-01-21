@@ -1,0 +1,44 @@
+<div
+  class="modal fade"
+  id="{{i[0].id}}-request-model"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">
+          {{i[0].title}}
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <form action="/complete/{{i[0].id}}" method="post">
+          Ad material url:
+          <div class="d-flex my-2">
+            <input
+              class="form-control me-2"
+              type="url"
+              id="evidance_url"
+              name="evidance_url"
+              required="true"
+            />
+            <button
+              class="btn btn-danger float-end"
+              id="url-submit"
+              type="submit"
+            >
+              Finalize
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

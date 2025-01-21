@@ -1,0 +1,177 @@
+{% extends "layout.html" %} {% block content %}
+<div class="container">
+  <h3>Search Keyword : {{result['keyword']}}</h3>
+  <h3>Search Result : {{result['search_term']}}</h3>
+  <h5>Total Results : {{result['total']}}</h5>
+  {% for i in result['data'][result['type']] %}
+  <div class="card mt-2">
+    <div class="card-header d-flex justify-content-between">
+      {% if result['type'] == 'campaign' %}
+      <span class="d-flex fw-bold"
+        >{{i['data'].campaign_name}} | Progress {{i['progress']}}%</span
+      >
+      {% elif result['type'] == 'user' %}
+      <span class="d-flex fw-bold"
+        >{{i['data'].username}} | {{i['data'].name}} | {{i['data'].email}} |
+        {{i['data'].role}} {% if i['metadata']['influencer']%} |
+        {{i['metadata']['influencer'].niche}} |
+        {{i['metadata']['influencer'].earnings}} {% endif %}</span
+      >
+      {% elif result['type'] == 'influencer' %}
+      <span class="d-flex fw-bold"
+      >{{i['data'].niche}} | {{i['data'].earnings}} |
+      {{i['metadata']['user'].username}} | {{i['metadata']['user'].name}} | {{i['metadata']['user'].role}} </span>
+      {% endif %}
+      <div>
+        {% if result['type'] == 'campaign' %}
+        <button
+          class="btn btn-primary text-capitalize"
+          data-bs-toggle="modal"
+          data-bs-target="#{{i['data'].id}}-view-model"
+        >
+          View
+        </button>
+        {% elif result['type']=='influencer'%}
+         <a
+          class="btn btn-primary text-capitalize"
+          href="/{{i['metadata']['user'].role}}_profile/{{i['metadata']['user'].id}}"
+        >
+          View
+        </a>
+
+        {% else %}
+        <a
+          class="btn btn-primary text-capitalize"
+          href="/{{i['data'].role}}_profile/{{i['data'].id}}"
+        >
+          View
+        </a>
+        {% endif %} {% if not i['metadata']['spam'] and session['role'] ==
+        'admin' %}
+        <button
+          class="btn btn-danger text-capitalize"
+          data-bs-toggle="modal"
+          data-bs-target="#{{i['data'].id}}-spam-modal"
+        >
+          Spam
+        </button>
+        {% elif session['role'] == 'admin' %}
+        <button
+          class="btn btn-danger text-capitalize"
+          data-bs-toggle="modal"
+          data-bs-target="#{{i['data'].id}}-unspam-modal"
+        >
+          Unspam
+        </button>
+        {% endif %}
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      id="{{i['data'].id}}-spam-modal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <form
+        action="/spam/{{result['type']}}/{{i['data'].id}}"
+        method="post"
+        class="modal-dialog"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="#{{i['data'].id}}-spam-modal">
+              Confirmation
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">Do you really want to Spam?</div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Spam</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div
+      class="modal fade"
+      id="{{i['data'].id}}-unspam-modal"
+      tabindex="-1"
+      aria-labelledby="{{i['data'].id}}-unspam-modal"
+      aria-hidden="true"
+    >
+      <form
+        action="/unspam/{{result['type']}}/{{i['data'].id}}"
+        method="post"
+        class="modal-dialog"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="#{{i['data'].id}}-unspam-modal">
+              Confirmation
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">Do you really want to Unspam?</div>
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-primary">Unspam</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div
+      class="modal fade"
+      id="{{i['data'].id}}-view-model"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              {{i['data'].campaign_name}}
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>{{i['data'].description}}</p>
+            <p>{{i['data'].start_date}}</p>
+            <p>{{i['data'].end_date}}</p>
+            <p>{{i['data'].category}}</p>
+            <p>{{i['data'].status}}</p>
+          </div>
+          <div class="modal-footer">
+            {% if session['role']=='sponsor' %}
+            <a
+              href="/campaign_edit/{{i['data'].id}}"
+              class="btn btn-info"
+              type="button"
+              >Edit campaigns</a
+            >
+            {% endif %}
+            <a href="/{{i['data'].id}}/ads_view" class="btn btn-primary"
+              >View ads</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>
+{% endblock content %}

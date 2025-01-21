@@ -1,0 +1,32 @@
+{% extends 'layout.html' %} {% block content %}
+<div class="container my-2">
+  <h4 class="d-flex justify-content-center text-decoration-underline">
+    Welcome : {{user_details['username']}}
+  </h4>
+  <div class="container-fluid overflow-auto">
+    <h5 class="fw-bold">Active Campaigns</h5>
+    {% for i in campaigns['active'] %} {% include
+    "dashboard_campaign_card.html"%} {% endfor %}
+  </div>
+  <div class="container-fluid">
+    <h5 class="fw-bold">Upcoming Campaigns</h5>
+    {% for i in campaigns['upcoming'] %} {% include
+    "dashboard_campaign_card.html"%} {% endfor %}
+  </div>
+  <div class="container-fluid">
+    <h5 class="fw-bold">Inactive Campaigns</h5>
+    {% for i in campaigns['inactive'] %} {% include
+    "dashboard_campaign_card.html"%} {% endfor %}
+  </div>
+  <div class="container-fluid">
+    <h5 class="fw-bold">Spammed Campaigns</h5>
+    {% for i in campaigns['spam'] %} {% include "dashboard_campaign_card.html"%}
+    {% endfor %}
+  </div>
+  <div class="container-fluid">
+    <h5 class="fw-bold">Spammed Users</h5>
+    {% for i in campaigns['spammed_influencers'] %} {% include
+    "dashboard_influencer_card.html"%} {% endfor %}
+  </div>
+</div>
+{% endblock content %}

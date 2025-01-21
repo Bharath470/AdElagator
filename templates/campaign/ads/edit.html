@@ -1,0 +1,188 @@
+{% extends 'layout.html' %} {% block content %}
+<!-- div container -->
+<div class="container float-end my-5">
+  <div>
+    <h2>Edit Ad</h2>
+  </div>
+  <form action="" method="post" class="dropdown">
+    <!-- Name of ad -->
+    <div class="row mb-3">
+      <label for="title" class="col-sm-2 col-form-label">Title</label>
+      <div class="col-sm-5">
+        <input
+          type="text"
+          class="form-control"
+          name="title"
+          id="title"
+          value="{{ads.title}}"
+          required
+        />
+      </div>
+    </div>
+
+    <!-- ad   -->
+    <div class="row mb-3">
+      <label for="campaign_name" class="col-sm-2 col-form-label"
+        >Campaign Name</label
+      >
+      <div class="col-sm-5">
+        <input
+          type="text"
+          class="form-control"
+          name="campaign_name"
+          id="campaign_name"
+          value="{{campaign_name}}"
+          readonly="true"
+        />
+      </div>
+    </div>
+    <!-- ad category  -->
+    <div class="row mb-3">
+      <label for="category" class="col-sm-2 col-form-label">Category</label>
+      <div class="col-sm-5">
+        <input
+          type="text"
+          class="form-control"
+          name="category"
+          id="category"
+          value="{{ads.category}}"
+          required
+        />
+      </div>
+    </div>
+    <!-- ads description -->
+    <div class="row mb-3">
+      <label for="ads_description" class="col-sm-2 col-form-label">
+        Description</label
+      >
+      <div class="col-sm-5">
+        <input
+          type="text"
+          class="form-control"
+          name="description"
+          id="description"
+          value="{{ads.description}}"
+          required
+        />
+      </div>
+    </div>
+
+    <!-- Budget -->
+    <div class="row mb-3">
+      <label for="payment" class="col-sm-2 col-form-label">Payment</label>
+      <div class="col-sm-5">
+        <input
+          type="number"
+          class="form-control"
+          name="payment"
+          id="payment"
+          min="0"
+          required
+          value="{{ads.payment}}"
+          {% if ads.influencer_id and not pending %}readonly=true{% endif %}
+        />
+      </div>
+    </div>
+    <!-- influencer -->
+    <div class="row mb-3 dropdown">
+      <label for="influencer" class="col-sm-2 col-form-label">
+        Influencer</label
+      >
+      <div class="col-sm-5">
+        {% if influencer_name and not pending %}
+        <input
+          type="text"
+          class="form-control"
+          name="influencer"
+          id="influencer"
+          value="{{influencer_name}}"
+          readonly="true"
+        />
+        {% elif pending %}
+          <div class="d-flex">
+            <input
+              type="text"
+              class="form-control"
+              name="influencer"
+              id="influencer"
+              value="{{influencer_name}}"
+              readonly="{{pending}}"
+            />
+            <button
+              type="button"
+              class="btn btn-danger ms-2"
+              data-bs-toggle="modal"
+              data-bs-target="#staticBackdrop"
+            >
+              Remove
+            </button>
+          </div>
+        {% else %}
+        <input
+          type="text"
+          class="form-control"
+          name="influencer"
+          id="influencer"
+          value="{{influencer_name}}"
+        />
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- terms -->
+    <div class="row mb-3">
+      <label for="terms" class="col-sm-2 col-form-label">Terms</label>
+      <div class="col-sm-5">
+        <textarea type="text" required class="form-control" name="terms" id="terms" {% if ads.influencer_id and not pending %}readonly=true{% endif %}>
+{{ads.terms}}</textarea
+        >
+      </div>
+    </div>
+    <!-- submit button -->
+    <div class="row mb-3">
+      <div class="col-sm-5 offset-sm-2">
+        <button type="submit" class="btn btn-primary">Save</button>
+      </div>
+    </div>
+  </form>
+</div>
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="staticBackdrop"
+  data-bs-backdrop="static"
+  data-bs-keyboard="false"
+  tabindex="-1"
+  aria-labelledby="staticBackdropLabel"
+  aria-hidden="true"
+>
+  <form action="/remove_request/{{ads.id}}" method="post"class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="staticBackdropLabel">
+          Remove Request
+        </h1>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        Do you want to remove the {{influencer_name}}'s Request?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+          Close
+        </button>
+        <button
+          type="submit"
+          class="btn btn-primary"
+          >Remove</
+        >
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

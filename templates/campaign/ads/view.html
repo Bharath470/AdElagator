@@ -1,0 +1,241 @@
+{% extends 'layout.html' %} {% block content %}
+<h3>Ads of {{campaign_name}} ({{remaining}})</h3>
+<div class="row">
+  {% for i in ads%}
+  <div class="card col-sm-3 mb-3 m-sm-2 text-capitalize">
+    <div class="card-body">
+      <h5 class="card-header text-danger-emphasis text-center">
+        {{i[0].title}}
+      </h5>
+      <div class="custom-body">
+        <p class="card-title fw-bold text-capitalize">
+          Category - {{i[0].category}}
+        </p>
+        <p class="card-subtitle text-muted" style="margin-left: 8px">
+          {{i[0].description}}
+        </p>
+        <br />
+        {% if i[1] == "No Influencer Assigned" and i[2]['assigned_infl'] != ''
+        and session['role']=='sponser' %}
+        <p class="card-title fw-bold">
+          Request Sent to Influencer : {{i[2]['assigned_infl']}}
+        </p>
+        {% elif i[2]['assigned_infl'] == session['username'] %}
+        <p class="card-title fw-bold">Sponsor Requested you</p>
+        {% else %}
+        <p class="card-title fw-bold">By - {{i[1]}}</p>
+        {% endif %}
+        <p class="card-title">Requirements- {{i[0].terms}}</p>
+
+        <p class="card-title">Payment : {{i[0].payment}}</p>
+        {% if i[3]['status'] != "No Negotiate" %}
+        <p class="card-title">Negotiate : {{i[3]['new_amount']}}</p>
+        {% endif %} {% if (i[2]['assigned_infl'] == session['username'] or
+        session['id']==owner) and i[0].evidence_url !=None%}
+        <p class="card-title">
+          Evidence :
+          <a
+            href="{{i[0].evidence_url}}"
+            class="link-secondary link-offset-2 link-underline-opacity-25 link-underline-opacity-100-hover"
+            >{{i[0].evidence_url}}</a
+          >
+          {% endif %}
+        </p>
+      </div>
+    </div>
+
+    {% if session['role']=='sponsor' and owner == session["id"] %}
+
+    <div class="card-footer d-flex justify-content-between">
+      <a
+        href="/{{i[0].id}}/ads_edit"
+        class="btn btn-outline-dark {% if i[0].influencer_id != None %}disabled{% endif %}"
+        type="button"
+        >Edit</a
+      >
+      {% if not i[0].influencer_id %}
+      <button class="btn btn-outline-danger" type="button">Delete</button>
+      {% elif i[0].evidence_url != None%}
+      <button
+        data-bs-toggle="modal"
+        data-bs-target="#{{i[0].id}}-request-model"
+        class="btn btn-info float-end disabled"
+        type="button"
+      >
+        completed
+      </button>
+      {% endif %}
+    </div>
+    {% elif session['role']=='admin' %}
+    <div class="card-footer d-flex justify-content-between">
+      {% if not i[4]['flagged'] %}
+      <button
+        class="btn btn-danger"
+        data-bs-toggle="modal"
+        data-bs-target="#{{i[0].id}}-spam-modal"
+        type="button"
+      >
+        Spam
+      </button>
+      <div
+        class="modal fade"
+        id="{{i[0].id}}-spam-modal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <form action="/spam/ads/{{i[0].id}}" method="post" class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="#{{i[0].id}}-spam-modal">
+                Confirmation
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">Do you really want to Spam?</div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Spam</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      {% else %}
+      <button
+        class="btn btn-danger"
+        data-bs-toggle="modal"
+        data-bs-target="#{{i[0].id}}-unspam-modal"
+        type="button"
+      >
+        Unspam
+      </button>
+      <div
+        class="modal fade"
+        id="{{i[0].id}}-unspam-modal"
+        tabindex="-1"
+        aria-labelledby="exampleModalLabel"
+        aria-hidden="true"
+      >
+        <form
+          action="/unspam/ads/{{i[0].id}}"
+          method="post"
+          class="modal-dialog"
+        >
+          <div class="modal-content">
+            <div class="modal-header">
+              <h1 class="modal-title fs-5" id="#{{i[0].id}}-unspam-modal">
+                Confirmation
+              </h1>
+              <button
+                type="button"
+                class="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div class="modal-body">Do you really want to Unspam?</div>
+            <div class="modal-footer">
+              <button type="submit" class="btn btn-primary">Unspam</button>
+            </div>
+          </div>
+        </form>
+      </div>
+      {% endif %}
+    </div>
+    {% elif session['role']=='influencer' %} {% if i[1] == session['username']
+    %}
+    <button
+      data-bs-toggle="modal"
+      data-bs-target="#{{i[0].id}}-request-model"
+      class="btn btn-info float-end {% if i[2]['status'] == 'completed'%}disabled{% endif %}"
+      type="button"
+    >
+      Complete{% if i[2]['status'] == 'completed'%}d{% endif %}
+    </button>
+    {% include "complete_model.html" %} {% elif session['role']=='sponsor' and
+    i[2]['assigned_infl'] == session['username'] %}
+    <div class="">
+      <div class="float-end">
+        <a
+          href="/accept_request/ad_request/{{i[2]['id']}}"
+          class="btn btn-success"
+          >Accept</a
+        >
+        <a
+          href="/reject_request/ad_request/{{i[2]['id']}}"
+          class="btn btn-danger"
+          >Reject</a
+        >
+      </div>
+    </div>
+
+    {% include 'view_modal.html' %} {% else %}
+    <form method="post" action="/request/{{i[0].id}}" class="card-footer">
+      <button
+        type="submit"
+        class="btn btn-info {% if i[2]['assigned_infl']!='' %} disabled {% endif %} float-end"
+        type="button"
+      >
+        {% if i[1] == "No Influencer Assigned" and i[2]['assigned_infl'] == ''
+        %} Request {% elif i[2]['assigned_infl']==session['username'] %}
+        Requested {% elif i[2]['assigned_infl'] != '' %} Not Available {% endif
+        %}
+      </button>
+      {% endif %}
+    </form>
+    {% endif %}
+  </div>
+  <div
+    class="modal fade"
+    id="{{i[0].id}}-delete-modal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Confirmation</h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">Do you really want to delete :(</div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+          >
+            Close
+          </button>
+          <a
+            type="button"
+            href="/{{i[0].id}}/ads_delete"
+            class="btn btn-primary"
+            >Delete</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+  {%endfor%}
+  <!-- </div> -->
+  {% if session['role']=='sponsor' and owner == session['id'] %}
+  <a href="/{{campaign_id}}/ads_create" class="btn btn-warning  rounded-circle {% if ads %}position-fixed bottom-0 end-0 me-5 mb-5{% else %} position-absolute top-50 start-50 translate-middle{% endif %}" style="{% if ads %}width:4em;height:4em;{% else %}width:5em;height:5em;{% endif %}z-index: 0"
+    >
+<svg xmlns="http://www.w3.org/2000/svg" width="35" height="35" fill="currentColor" class="bi bi-plus-lg" viewBox="0 0 16 16"  style="margin-top: {% if ads %}.3em;{% else %}.9em{% endif %}">
+  <path fill-rule="evenodd" d="M8 2a.5.5 0 0 1 .5.5v5h5a.5.5 0 0 1 0 1h-5v5a.5.5 0 0 1-1 0v-5h-5a.5.5 0 0 1 0-1h5v-5A.5.5 0 0 1 8 2"/>
+</svg>
+</a>
+
+  {% endif %}
+</div>
+{% endblock content %}

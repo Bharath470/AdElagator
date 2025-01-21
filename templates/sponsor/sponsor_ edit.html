@@ -1,0 +1,76 @@
+{% extends 'layout.html' %}{% block content%}
+<div>
+    <h2 class="text-danger-emphasis" style="margin: 5px auto 20px 300px">
+        Edit your Profile
+    </h2>
+</div>
+<form action="/sponsor_edit_dashboard" method="POST" enctype=multipart/form-data>
+    <div class="container row align-items-start">
+        <div class="col-auto">
+
+            <div class="circle-container" style="width: 250px">
+                <img src={{ url_for('static', filename='/profile/' + sponsor.image_path) }} alt="profile"
+                    class="img-fluid" style="border-radius: 10px" />
+            </div>
+            <div>
+                <p class="text mx-3">username: {{user.username}}</p>
+                <input type="file" class="btn btn-outline-dark" style="width:200px" name="file" id="file" />
+            </div>
+        </div>
+        <div class="col">
+
+
+            <div class="row mb-3">
+                <label for="name" class="col-sm-3 col-form-label">
+                    Display Name
+                </label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" value="{{user.name}}" id="name" name="name" reqiured />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="gender" class="col-sm-3 col-form-label">Gender:</label>
+                <div class="col-sm-5 ">
+                    <select id="gender" name="gender" class="form-select" aria-label="Default select example">
+                        <option value="" disabled>Select Gender</option>
+                        <option value="male" {% if user.gender=='male' %}selected{% endif %}>Male</option>
+                        <option value="female" {% if user.gender=='female' %}selected{% endif %}>Female</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="name" class="col-sm-3 col-form-label"> Email </label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" value="{{user.email}}" id="email" reqiured name="email" />
+                </div>
+            </div>
+
+
+            <div class="row mb-3">
+                <p class="text-secondary">
+                    would you like to update your password?
+                </p>
+                <label for="name" class="col-sm-3 col-form-label"> Password </label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" value="" placeholder="enter new password" id="password"
+                        name="password" />
+                </div>
+            </div>
+            <div class="row mb-3">
+                <label for="name" class="col-sm-3 col-form-label">
+                    Conform Password
+                </label>
+                <div class="col-sm-5">
+                    <input type="text" class="form-control" value="" placeholder="re-enter password"
+                        id="confirmpassword" name="confirmpassword" />
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary" name="register" style="margin-top: 10px">
+                Save
+            </button>
+
+        </div>
+    </div>
+</form>
+{% endblock %}

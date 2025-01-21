@@ -1,0 +1,59 @@
+<div class="card mt-2">
+  <div class="card-header d-flex justify-content-between">
+    <span class="d-flex fw-bold"
+      >{{i[0].campaign_name}} | Progress {{i[1]}}% {% if i[0].is_flagged %}|
+      Flagged {% endif %}</span
+    >
+
+    <button
+      class="btn btn-outline-primary"
+      data-bs-toggle="modal"
+      data-bs-target="#{{i[0].id}}-model"
+    >
+      View
+    </button>
+  </div>
+  <div
+    class="modal fade"
+    id="{{i[0].id}}-model"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">
+            {{i[0].campaign_name}}
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <p>{{i[0].description}}</p>
+          <p>{{i[0].start_date}}</p>
+          <p>{{i[0].end_date}}</p>
+          <p>{{i[0].category}}</p>
+          <p>{{i[0].status}}</p>
+        </div>
+        <div class="modal-footer">
+          {% if session['role']=='sponsor' %}
+          <a
+            href="/campaign_edit/{{i[0].id}}"
+            class="btn btn-info"
+            type="button"
+            >Edit campaigns</a
+          >
+          {% endif %}
+          <a href="/{{i[0].id}}/ads_view" class="btn btn-primary">View ads</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->

@@ -1,0 +1,59 @@
+{% extends "layout.html" %}{% block content %}
+<div class="bg-light" style="width: 100%; height:300px; box-shadow:1px 10px 3px rgb(245, 245, 245); ">
+    <div class="row align-items-start">
+        <div class="col-auto">
+            <div class="circle-container" style="width: 200px; margin: 10px; ">
+                <img src={{ url_for('static', filename='/profile/' + sponsor.image_path) }} alt="profile"
+                    class="img-fluid " style="border-radius: 10px; height:200px">
+            </div>
+            <div style="margin:3px 50px;">
+                <p class="text-secondary">Call me : {{user.username}}</p>
+                
+                <a href="/sponsor_edit_dashboard" class="btn btn-outline-dark btn-sm {% if req_type == 'others' %} d-none {% endif %}">Edit Profile</a>
+                
+            </div>
+        </div>
+        <div class="col">
+            <div class="text-container">
+                <h2 class="account-heading text-danger-emphasis">{{user.name}} 
+                </h2>
+                <p class="text-secondary">Gender :{{user.gender}}</p>
+
+                <p class="text-secondary">Email : {{user.email}}</p>
+                <p class="text-secondary">Industry : {{sponsor.industry}}</p>
+                {% if ratings != None %}
+                <p class="text-secondary">Rating : {{ratings.rating}} ({{ratings.count}}) </p>
+                {% endif%}
+
+            </div>
+        </div>
+    </div>
+
+<div class="container-sm my-5">
+    <h4 class="text-danger-emphasis col-sm-5">Recent Work </h4>
+   {% for work in recent_work %}
+    <div class="card d-flex" style="margin-top: 10px ">
+        <div class="card-body fw-bold">
+           
+            Recently worked with {{work[1]}} | {{work[4]}} | {{work[0].title}} | {{work[0].category}}  |
+            {{work[0].payment}} | completed {% if work[0].is_flagged %}| Flagged {% endif %}
+   {% if req_type == 'self'%}
+        {% if not work[2] %}
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Rate
+        </button>
+        {% include "rating_modal.html" %}
+        {% else %}
+        <button type="button" class="btn btn-primary disabled float-end" data-bs-toggle="modal" data-bs-target="#exampleModal">
+            Thanks for your rating ❤️😍
+        </button>
+        {% endif %}
+    {% endif %}
+    </div>
+{% endfor %}
+</div>
+
+</div>
+
+{% endblock content %}

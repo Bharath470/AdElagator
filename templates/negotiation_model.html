@@ -1,0 +1,52 @@
+  <div
+    class="modal fade"
+    id="{{i[0].id}}-model"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div
+      class="modal-dialog modal-dialog-centered modal-dialog-scrollable"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">
+            {{i[0].title}}
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <p>Campaign Name: {{i[1].campaign_name}}</p>
+          <p>Ad Description: {{i[0].description}}</p>
+          <p class="d-flex"><span class="me-2">Ad payment:</span> <form method="post" action="/negotiate/counter_nego/{{i[0].id}}">
+            <input type="number" class="form-control" name="budget" id="negotiavte" value="{{i[0].payment}}" />
+            <button class="btn btn-primary mx-2">negotiate</button>
+          </form>
+        </p>
+          <p>Campaign budget: {{i[1].budget}}</p>
+          <p>Start Date: {{i[1].start_date}}</p>
+          <p>End Date: {{i[1].end_date}}</p>
+          <p>Category: {{i[1].category}}</p>
+          <p>status: {{i[1].status}}</p>
+          <p>Terms: {{i[0].terms}}</p>
+        </div>
+        <div class="modal-footer">
+          {% if session['role']=='sponsor' %}
+          <a
+            href="/campaign_edit/{{i[0].id}}"
+            class="btn btn-info"
+            type="button"
+            >Edit campaigns</a
+          >
+          {% endif %}
+          <a href="/{{i[0].id}}/ads_view" class="btn btn-primary">View ads</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

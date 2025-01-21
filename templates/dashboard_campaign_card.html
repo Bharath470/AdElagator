@@ -1,0 +1,94 @@
+<div class="card mt-2">
+  <div class="card-header d-flex justify-content-between">
+    <span class="d-flex fw-bold"
+      >{{i['data'].campaign_name}} | Progress {{i['progress']}}%</span
+    >
+    <div>
+      <button
+        class="btn btn-outline-primary text-capitalize"
+        data-bs-toggle="modal"
+        data-bs-target="#{{i['data'].id}}-view-model"
+      >
+        view
+      </button>
+      {% if not i['data'].is_flagged %}
+      <button
+        class="btn btn-outline-danger text-capitalize"
+        data-bs-toggle="modal"
+        data-bs-target="#{{i['data'].id}}-spam-modal"
+      >
+        spam
+      </button>
+      {% else %}
+      <button
+        class="btn btn-outline-success text-capitalize"
+        data-bs-toggle="modal"
+        data-bs-target="#{{i['data'].id}}-unspam-modal"
+      >
+        unspam
+      </button>
+      {% endif %}
+    </div>
+  </div>
+  <div
+    class="modal fade"
+    id="{{i['data'].id}}-spam-modal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    {% include 'spam_modal_form.html' %}
+  </div>
+  <div
+    class="modal fade"
+    id="{{i['data'].id}}-unspam-modal"
+    tabindex="-1"
+    aria-labelledby="{{i['data'].id}}-unspam-modal"
+    aria-hidden="true"
+  >
+    {% include 'unspam_modal_form.html' %}
+  </div>
+  <div
+    class="modal fade"
+    id="{{i['data'].id}}-view-model"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">
+            {{i['data'].campaign_name}}
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <p>{{i['data'].description}}</p>
+          <p>{{i['data'].start_date}}</p>
+          <p>{{i['data'].end_date}}</p>
+          <p>{{i['data'].category}}</p>
+          <p>{{i['data'].status}}</p>
+        </div>
+        <div class="modal-footer">
+          {% if session['role']=='sponsor' %}
+          <a
+            href="/campaign_edit/{{i['data'].id}}"
+            class="btn btn-info"
+            type="button"
+            >Edit campaigns</a
+          >
+          {% endif %}
+          <a href="/{{i['data'].id}}/ads_view" class="btn btn-outline-primary"
+            >View ads</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

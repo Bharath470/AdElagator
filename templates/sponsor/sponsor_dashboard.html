@@ -1,0 +1,61 @@
+{% extends 'layout.html' %} {% block content %}
+<div>
+  <h4 class="d-flex justify-content-center">Welcome {{user.name}}</h4>
+</div>
+<div class="container mx-1 my-4">
+  <h5>Active Campaigns :</h5>
+  {% for i in active_campaigns %} {% include 'active_campaigns.html' %} {%
+  endfor %}
+</div>
+
+<div class="container mx-1 my-4">
+  <h5>New requests :</h5>
+  {% for i in active_requests %}
+  <div class="card mt-2">
+    <div class="card-header d-flex justify-content-between">
+      <span class="d-flex fw-bold"
+        >Ad Request: {{i[0]}} | {{i[1]}} | {{i[2]}} | {{i[3]}}</span
+      >
+      <div>
+        <a href="/influencer_profile/{{i[4].request_id}}" class="btn btn-info"
+          >View</a
+        >
+        <a href="/accept_request/ad_request/{{i[4].id}}" class="btn btn-success"
+          >Accept</a
+        >
+        <a href="/reject_request/ad_request/{{i[4].id}}" class="btn btn-danger"
+          >Reject</a
+        >
+      </div>
+    </div>
+  </div>
+  {% endfor %} {% for i in active_negotiations %}
+  <div class="card mt-2">
+    <div class="card-header d-flex justify-content-between">
+      <span class="d-flex fw-bold"
+        >Negotiation Request: {{i[0].title}} | {{i[5]}} | {% if
+        session['role']=='sponsor' %}{{i[1].niche}} {% elif session['role'] ==
+        'influencer' %} {{i[2].niche}} {% endif %} | {{i[0].payment}} {% if i[4]
+        and i[4].status=='requested' %} {{i[4].status}} {{i[4].new_amount}} {%
+        endif %}
+      </span>
+      <div>
+        <a href="/influencer_profile/{{i[2].user_id}}" class="btn btn-info"
+          >View</a
+        >
+        <a
+          href="/accept_request/negotiation_request/{{i[3]}}"
+          class="btn btn-success"
+          >Accept</a
+        >
+        <a
+          href="/reject_request/negotiation_request/{{i[3]}}"
+          class="btn btn-danger"
+          >Reject</a
+        >
+      </div>
+    </div>
+  </div>
+  {% include 'view_modal.html' %} {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,77 @@
+{% extends 'layout.html' %} {% block content %}
+<div>
+  <h4 class="d-flex justify-content-center">Welcome {{user.name}}</h4>
+</div>
+<div class="">
+  <div class="container mx-1 my-4">
+    <h5>Active Campaigns :</h5>
+    {% for i in active_campaigns %} {% include 'active_campaigns.html' %} {%
+    endfor %}
+  </div>
+
+  <div class="container mx-1 my-4">
+    <div>
+      <h5>New requests :</h5>
+      {% for i in active_requests %}
+      <div class="card mt-2">
+        <div class="card-header d-flex justify-content-between">
+          <span class="d-flex fw-bold"
+            >Ad Request: {{i[0].title}} | {{i[2]}} | {{i[1].niche}} |
+            {{i[0].payment}} {% if i[4] %} {{i[4].status}} {% endif %} {% if
+            i[5] %}| {{i[5]["status"]}} {% if i[5]["new_amount"]!=0 %} - Rs.
+            {{i[5]["new_amount"]}}{% endif %} {% endif %}
+          </span>
+          <div>
+            <button
+              class="btn btn-outline-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#{{i[0].id}}-{% if i[4] %}}i[4].new_amount{% endif %}-request-model"
+            >
+              View
+            </button>
+            <a
+              href="/accept_request/ad_request/{{i[3]}}"
+              class="btn btn-outline-success"
+              >Accept</a
+            >
+            <a href="/reject_request/ad_request/{{i[3]}}" class="btn btn-outline-danger"
+              >Reject</a
+            >
+          </div>
+        </div>
+      </div>
+      {% include 'view_modal.html' %} {% endfor %} {% for i in
+      active_negotiations%}
+      <div class="card mt-2">
+        <div class="card-header d-flex justify-content-between">
+          <span class="d-flex fw-bold"
+            >Negotiation Request: {{i[0].title}} | {{i[2].username}} |
+            {{i[1].niche}} | {{i[0].payment}} {% if i[4] %} {{i[4].status}}
+            {{i[4].new_amount}}{% endif %}
+          </span>
+          <div>
+            <button
+              class="btn btn-outline-primary"
+              data-bs-toggle="modal"
+              data-bs-target="#{{i[0].id}}-{% if i[4] %}}i[4].new_amount{% endif %}-request-model"
+            >
+              View
+            </button>
+            <a
+              href="/accept_request/negotiation_request/{{i[3]}}"
+              class="btn btn-outline-success"
+              >Accept</a
+            >
+            <a
+              href="/reject_request/negotiation_request/{{i[3]}}"
+              class="btn btn-outline-danger"
+              >Reject</a
+            >
+          </div>
+        </div>
+      </div>
+      {% include 'view_modal.html' %} {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

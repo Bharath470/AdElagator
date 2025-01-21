@@ -1,0 +1,23 @@
+<form
+  action="/unspam/campaign/{{i['data'].id}}"
+  method="post"
+  class="modal-dialog text-capitalize"
+>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1 class="modal-title fs-5" id="#{{i['data'].id}}-unspam-modal">
+        Confirmation
+      </h1>
+      <button
+        type="button"
+        class="btn-close"
+        data-bs-dismiss="modal"
+        aria-label="Close"
+      ></button>
+    </div>
+    <div class="modal-body">Do you really want to unspam?</div>
+    <div class="modal-footer">
+      <button type="submit" class="btn btn-outline-success">unpam</button>
+    </div>
+  </div>
+</form>

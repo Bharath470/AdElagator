@@ -1,0 +1,127 @@
+<div class="card mt-2">
+  <div class="card-header d-flex justify-content-between">
+    <span class="d-flex fw-bold"
+      >{{i.username}} | {{i.name}} | {{i.email}} | {{i.niche}}</span
+    >
+    <div>
+      <a
+        class="btn btn-outline-primary text-capitalize"
+        href="\{{i.role}}_profile\{{i.id}}"
+      >
+        view
+      </a>
+      {% if not i.is_flag %}
+      <button
+        class="btn btn-outline-danger text-capitalize"
+        data-bs-toggle="modal"
+        data-bs-target="#{{i.id}}-spam-user-modal"
+      >
+        spam
+      </button>
+      {% else %}
+      <button
+        class="btn btn-outline-success text-capitalize"
+        data-bs-toggle="modal"
+        data-bs-target="#{{i.id}}-unspam-user-modal"
+      >
+        unspam
+      </button>
+      {% endif %}
+    </div>
+  </div>
+  <div
+    class="modal fade"
+    id="{{i.id}}-spam-modal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <form action="/spam/campaign/{{i.id}}" method="post" class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="#{{i.id}}-spam-user-modal">
+            Confirmation
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">Do you really want to Spam?</div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-outline-danger">Spam</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div
+    class="modal fade text-capitalize"
+    id="{{i.id}}-unspam-user-modal"
+    tabindex="-1"
+    aria-labelledby="{{i.id}}-unspam-user-modal"
+    aria-hidden="true"
+  >
+    <form
+      action="/unspam/user/{{i.id}}"
+      method="post"
+      class="modal-dialog text-capitalize"
+    >
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="#{{i.id}}-unspam-user-modal">
+            Confirmation
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">Do you really want to unspam?</div>
+        <div class="modal-footer">
+          <button type="submit" class="btn btn-outline-success">unspam</button>
+        </div>
+      </div>
+    </form>
+  </div>
+  <div
+    class="modal fade"
+    id="{{i.id}}-view-user-model"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">
+            {{i.campaign_name}}
+          </h1>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <p>Name : {{i.name}}</p>
+          <p>Username : {{i.start_date}}</p>
+          <p>Email : {{i.email}}</p>
+          <p>Role : {{i.role}}</p>
+        </div>
+        <div class="modal-footer">
+          {% if session['role']=='sponsor' %}
+          <a href="/campaign_edit/{{i.id}}" class="btn btn-info" type="button"
+            >Edit campaigns</a
+          >
+          {% endif %}
+          <a href="/{{i.id}}/ads_view" class="btn btn-primary">View ads</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
