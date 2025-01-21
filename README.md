@@ -1,0 +1,6 @@
+- Import the code into your local storage
+- Create a Virtual environment using "python -m venv venv"
+- Activate the Virtual environment by running "venv\Scripts\activate"
+- Install flask using "pip install flask"
+- Install SQLAlchemy using "pip install sqlalchemy"
+- Run the app using the code "flask run"
