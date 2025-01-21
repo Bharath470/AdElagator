@@ -1,0 +1,19 @@
+.card{
+    padding: 0 !important;
+    
+}
+
+.card-body{
+    padding: 0 !important;
+}
+.custom-header{
+    display: flex;
+    gap:18%;
+}
+.card-footer{
+    border: none !important;
+    background-color:white !important;
+}
+.custom-body{
+    padding:10px 20px;
+}
